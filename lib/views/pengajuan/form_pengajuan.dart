@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/widgets/component_form.dart';
 import 'package:frontend/widgets/custom_top_navbar_fitur.dart';
 
 class FormPengajuan extends StatefulWidget {
@@ -39,7 +38,6 @@ class _FormPengajuanState extends State<FormPengajuan> {
       setState(() {
         if (isStartDate) {
           _startDate = picked;
-          // Set end date minimum to be the start date
           if (_endDate != null && _endDate!.isBefore(picked)) {
             _endDate = picked;
           }
@@ -58,7 +56,6 @@ class _FormPengajuanState extends State<FormPengajuan> {
       ),
     );
 
-    // Navigasi ke halaman pengajuan setelah Snackbar selesai
     Future.delayed(Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/pengajuan');
     });
@@ -67,126 +64,147 @@ class _FormPengajuanState extends State<FormPengajuan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomTopNavbarFitur(appPage: 'Form Pengajuan Cuti'),
+      appBar:
+          CustomTopNavbarFitur(appPage: 'Form Pengajuan Cuti', leading: true),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              _buildTextField(
-                controller: _namaController,
-                label: 'Nama Pengajuan',
-                keyboardType: TextInputType.text,
-              ),
-              _buildTextField(
-                controller: _nipController,
-                label: 'NIP',
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              ),
-              _buildDropdownField(
-                value: _selectedJabatan,
-                label: 'Jabatan',
-                items: jabatanOptions,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedJabatan = newValue;
-                  });
-                },
-              ),
-              _buildTextField(
-                controller: _masaKerjaController,
-                label: 'Masa Kerja',
-                keyboardType: TextInputType.text,
-              ),
-              _buildTextField(
-                controller: _unitKerjaController,
-                label: 'Unit Kerja',
-                keyboardType: TextInputType.text,
-              ),
-              _buildJenisCutiCheckboxes(),
-              _buildTextField(
-                controller: _lamaCutiController,
-                label: 'Lama Cuti',
-                keyboardType: TextInputType.text,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => _selectDate(context, true),
-                      child: AbsorbPointer(
-                        child: _buildTextField(
-                          controller: TextEditingController(
-                            text: _startDate != null
-                                ? _startDate!.toLocal().toString().split(' ')[0]
-                                : '',
-                          ),
-                          label: 'Tanggal Mulai Cuti',
-                          keyboardType: TextInputType.text,
-                        ),
-                      ),
-                    ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  _buildTextField(
+                    controller: _namaController,
+                    label: 'Nama Pengajuan',
+                    keyboardType: TextInputType.text,
                   ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => _selectDate(context, false),
-                      child: AbsorbPointer(
-                        child: _buildTextField(
-                          controller: TextEditingController(
-                            text: _endDate != null
-                                ? _endDate!.toLocal().toString().split(' ')[0]
-                                : '',
+                  _buildTextField(
+                    controller: _nipController,
+                    label: 'NIP',
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+                  _buildDropdownField(
+                    value: _selectedJabatan,
+                    label: 'Jabatan',
+                    items: jabatanOptions,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedJabatan = newValue;
+                      });
+                    },
+                  ),
+                  _buildTextField(
+                    controller: _masaKerjaController,
+                    label: 'Masa Kerja',
+                    keyboardType: TextInputType.text,
+                  ),
+                  _buildTextField(
+                    controller: _unitKerjaController,
+                    label: 'Unit Kerja',
+                    keyboardType: TextInputType.text,
+                  ),
+                  _buildJenisCutiCheckboxes(),
+                  _buildTextField(
+                    controller: _lamaCutiController,
+                    label: 'Lama Cuti',
+                    keyboardType: TextInputType.text,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _selectDate(context, true),
+                          child: AbsorbPointer(
+                            child: _buildTextField(
+                              controller: TextEditingController(
+                                text: _startDate != null
+                                    ? _startDate!
+                                        .toLocal()
+                                        .toString()
+                                        .split(' ')[0]
+                                    : '',
+                              ),
+                              label: 'Tanggal Mulai Cuti',
+                              keyboardType: TextInputType.text,
+                            ),
                           ),
-                          label: 'Tanggal Akhir Cuti',
-                          keyboardType: TextInputType.text,
                         ),
                       ),
-                    ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _selectDate(context, false),
+                          child: AbsorbPointer(
+                            child: _buildTextField(
+                              controller: TextEditingController(
+                                text: _endDate != null
+                                    ? _endDate!
+                                        .toLocal()
+                                        .toString()
+                                        .split(' ')[0]
+                                    : '',
+                              ),
+                              label: 'Tanggal Akhir Cuti',
+                              keyboardType: TextInputType.text,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  _buildTextField(
+                    controller: _alamatCutiController,
+                    label: 'Alamat Cuti',
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                  ),
+                  _buildTextField(
+                    controller: _alasanCutiController,
+                    label: 'Alasan Cuti',
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _showSnackbarAndNavigate();
+                            }
+                          },
+                          child: Text('Konfirmasi'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            textStyle: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Batal'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            textStyle: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              _buildTextField(
-                controller: _alamatCutiController,
-                label: 'Alamat Cuti',
-                keyboardType: TextInputType.multiline,
-                maxLines: 3,
-              ),
-              _buildTextField(
-                controller: _alasanCutiController,
-                label: 'Alasan Cuti',
-                keyboardType: TextInputType.multiline,
-                maxLines: 3,
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // Proses data form jika valid
-                        _showSnackbarAndNavigate();
-                      }
-                    },
-                    child: Text('Konfirmasi'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Kembali ke halaman pengajuan
-                    },
-                    child: Text('Batal'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.grey, // Warna background tombol batal
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -211,6 +229,8 @@ class _FormPengajuanState extends State<FormPengajuan> {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
           ),
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
         ),
         keyboardType: keyboardType,
         maxLines: maxLines,

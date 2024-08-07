@@ -1,26 +1,51 @@
+import 'package:frontend/state_util.dart';
+import 'package:frontend/core.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/services/main_layout.dart';
-import 'package:frontend/services/route.dart';
+import 'package:frontend/service/main_layout.dart';
+import 'package:frontend/service/route.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runMainApp();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+runMainApp() async {
+  return runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Cuti Online',
+      navigatorKey: Get.navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
       home: MainLayout(),
-      initialRoute: AppRoute.main,
+      initialRoute: AppRoute.login,
       onGenerateRoute: AppRoute.generateRoute,
     );
   }

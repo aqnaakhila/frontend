@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/main_layout.dart';
-import 'package:frontend/services/route.dart';
+import 'package:frontend/resources/theme/app_colors.dart';
+import 'package:frontend/service/main_layout.dart';
+import 'package:frontend/service/route.dart';
 import 'package:frontend/views/hak/main_hak.dart';
 import 'package:frontend/views/help/main_bantuan.dart';
 import 'package:frontend/views/home/main_home.dart';
@@ -19,15 +20,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   static List<Widget> _pages() {
     return <Widget>[
-      MainLayout(),
       PengajuanPage(),
-      PersetujanPage(),
-      KalenderCutiPage(),
-      HakCutiPage(),
+      PersetujuanPage(),
+      HomePage(),
       ProfilePage(),
       BantuanPage(),
     ];
